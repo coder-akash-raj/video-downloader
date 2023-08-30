@@ -33,7 +33,7 @@ def main():
                 
                 # Download the video using tqdm to show progress
                 with open(f"{video_title}.mp4", "wb") as f:
-                    for chunk in tqdm(selected_stream.iter_content(chunk_size), total=video_size // chunk_size, unit="KB"):
+                    for chunk in tqdm(response.iter_content(chunk_size), total=video_size // chunk_size, unit="KB"):
                         f.write(chunk)
                         progress_bar.progress(f.tell() / video_size)
                         
