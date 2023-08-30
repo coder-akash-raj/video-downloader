@@ -40,8 +40,6 @@ def main():
                 with open(f"{video_title}.mp4", "wb") as f:
                     for chunk in tqdm(response.iter_content(chunk_size=1024), total=video_size // 1024, unit="KB"):
                         f.write(chunk)
-                        progress = min(f.tell() / video_size, 1.0)
-                        st.progress(progress)
                         
                 st.success("Video downloaded successfully!")
 
