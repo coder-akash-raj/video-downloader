@@ -27,15 +27,20 @@ def main():
             if download_button:
                 selected_stream = resolutions[selected_resolution]
                 st.write("Downloading...")
-                
-                # Prepare tqdm to show progress
-                progress_bar = st.progress(0)
-                
+
+                # Get the video stream URL
+                video_url = selected_stream.url
+
+                # Get the video size
+                video_size = selected_stream.filesize
+
                 # Download the video using tqdm to show progress
+                response = requests.get(video_url, stream=True)
                 with open(f"{video_title}.mp4", "wb") as f:
-                    for chunk in tqdm(response.iter_content(chunk_size), total=video_size // chunk_size, unit="KB"):
+                    for chunk in tqdm(response.iter_content(chunk_size=1024), total=video_size // 1024, unit="KB"):
                         f.write(chunk)
-                        progress_bar.progress(f.tell() / video_size)
+                        progress = min(f.tell() / video_size, 1.0)
+                        st.progress(progress)
                         
                 st.success("Video downloaded successfully!")
 
